@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: webapp
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: role-tokenreview-binding
+  namespace: default
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: system:auth-delegator
+subjects:
+- kind: ServiceAccount
+  name: vault-auth
+  namespace: default
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      serviceAccountName: webapp
+      containers:
+      - name: app
+        image: baghelg/vault-hello-world:k8s
+        imagePullPolicy: Always
+        env:
+        - name: VAULT_ADDR
+          value: "http://vault:8200"
+        - name: JWT_PATH
+          value: "/var/run/secrets/kubernetes.io/serviceaccount/token"
+        - name: SERVICE_PORT
+          value: "8080"

@@ -1,6 +1,8 @@
-# hello-vault
+# learn-vault-hello-world
 
 A sample app to test Vault KV engine with root token and k8s authentication
+
+![kubernetes](/images/kubernetes.png)
 
 ## Local Development
 
@@ -24,27 +26,27 @@ $ go run *.go
 Build and push the Docker image. (multi-arch)
 
 ```shell
-$ docker buildx build --push --platform linux/amd64,linux/arm64,linux/arm/v7 -t USERNAME/hello-vault:k8s .
+$ docker buildx build --push --platform linux/amd64,linux/arm64,linux/arm/v7 -t USERNAME/vault-hello-world:k8s .
 ```
 
 ## Load it into Kubernetes
 
 The assumption is Kubernetes & Vault are configured correctly. Update the configuration file to use your Docker image.
 
-Apply the configuration that describes the hello-vault pod.
+Apply the configuration that describes the vault-hello-world pod.
 
 ```shell
-$ kubectl apply -f hello-vault.yaml
+$ kubectl apply -f vault-hello-world.yaml
 ```
 
 Check the logs of the server.
 
 ```shell
-$ kubectl logs hello-vault-e54r445b4c-psdlk
+$ kubectl logs webapp-e54r445b4c-psdlk
 ```
 
 Login to the instance.
 
 ```shell
-$ kubectl exec -it hello-vault-e54r445b4c-psdlk /bin/bash
+$ kubectl exec -it webapp-e54r445b4c-psdlk /bin/bash
 ```
