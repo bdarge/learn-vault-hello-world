@@ -27,4 +27,4 @@ jobs:
         with:
           platforms: linux/amd64,linux/arm64,linux/arm/v7
           push: true
-          tags: baghelg/simple-vault-client:latest
+          tags: hashieducation/simple-vault-client:latest
