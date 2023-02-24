@@ -26,7 +26,7 @@ $ go run *.go
 Build and push the Docker image. (multi-arch)
 
 ```shell
-$ docker buildx build --push --platform linux/amd64,linux/arm64,linux/arm/v7 -t USERNAME/vault-hello-world:k8s .
+$ docker buildx build --push --platform linux/amd64,linux/arm64,linux/arm/v7 -t USERNAME/simple-vault-client .
 ```
 
 ## Load it into Kubernetes
@@ -36,7 +36,7 @@ The assumption is Kubernetes & Vault are configured correctly. Update the config
 Apply the configuration that describes the vault-hello-world pod.
 
 ```shell
-$ kubectl apply -f vault-hello-world.yaml
+$ kubectl apply -f deploy.yaml
 ```
 
 Check the logs of the server.
