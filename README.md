@@ -31,7 +31,20 @@ $ docker buildx build --push --platform linux/amd64,linux/arm64,linux/arm/v7 -t 
 
 ## Load it into Kubernetes
 
-The assumption is Kubernetes & Vault are configured correctly. Update the configuration file to use your Docker image.
+The assumption is helm installed and k8s cluster is configured. Update the configuration file to use your Docker image.
+
+Add the HashiCorp Helm repository and update repositories for the latest versions.
+
+```shell
+$ helm repo add hashicorp https://helm.releases.hashicorp.com
+$ helm repo update
+```
+
+Install the latest version of the Vault server running in development mode.
+
+```shell-session
+$ helm install vault hashicorp/vault --set "server.dev.enabled=true"
+```
 
 Apply the configuration that describes the vault-hello-world pod.
 
