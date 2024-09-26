@@ -15,7 +15,7 @@ roleRef:
   name: system:auth-delegator
 subjects:
 - kind: ServiceAccount
-  name: vault-auth
+  name: webapp
   namespace: default
 
 ---
@@ -38,12 +38,31 @@ spec:
       serviceAccountName: webapp
       containers:
       - name: app
-        image: baghelg/vault-hello-world:k8s
+        image: ghcr.io/bdarge/simple-vault-client:latest
         imagePullPolicy: Always
         env:
         - name: VAULT_ADDR
-          value: "http://vault:8200"
+          value: "https://192.168.50.76:8200"
         - name: JWT_PATH
           value: "/var/run/secrets/kubernetes.io/serviceaccount/token"
         - name: SERVICE_PORT
-          value: "8080"
+          value: "8082"
+        - name: AUTH_PATH
+          value: "auth/k8s-remote/login"
+      imagePullSecrets:
+      - name: regcred
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp-api-svc
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 8082
+      protocol: TCP
+      name: http
+      targetPort: 8082
+  selector:
+    app: webapp
