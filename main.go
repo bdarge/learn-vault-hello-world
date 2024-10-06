@@ -45,8 +45,11 @@ func main() {
 				authPath = "auth/kubernetes/login"
 			}
 
+			role := os.Getenv("ROLE")
+			fmt.Println("ROLE:", role)
+
 			// Create the payload for Vault authentication
-			pl := VaultJWTPayload { Role: "webapp", JWT: jwt }
+			pl := VaultJWTPayload { Role: role, JWT: jwt }
 			jwtPayload, err := json.Marshal(pl)
 			if err != nil {
 				fmt.Println("Error encoding Vault request JSON:", err)
